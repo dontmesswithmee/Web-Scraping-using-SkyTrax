@@ -1,0 +1,1248 @@
+---
+title: "Web Scraping using SkyTrax"
+author: "Rahul Chauhan"
+date: "2023-03-02"
+output: html_document
+---
+
+## Installing necessary packages to extract HTML elements from the website
+
+```{r}
+#install.packages("rvest") #allows us to parse HTML content and extract the HTML elements from it. 
+#install.packages("xml2")
+library(tidyverse)
+library(xml2) 
+library(rvest)
+library(ggplot2)
+```
+
+## Extracting customer reviews from Skytrax website related to Delta Airlines
+
+```{r}
+base_url_1 <- 'https://www.airlinequality.com/airline-reviews/delta-air-lines/'
+base_url_2 <- '?sortby=post_date%3ADesc&pagesize=100'
+
+# The website has all customer reviews for Delta Airlines
+```
+
+```{r}
+
+url_2 <- 'page/2/'
+url_3 <- 'page/3/'
+url_4 <- 'page/4/'
+url_5 <- 'page/5/'
+url_6 <- 'page/6/'
+url_7 <- 'page/7/'
+url_8 <- 'page/8/'
+url_9 <- 'page/9/'
+url_10 <- 'page/10/'
+url_11 <- 'page/11/'
+url_12 <- 'page/12/'
+url_13 <- 'page/13/'
+url_14 <- 'page/14/'
+url_15 <- 'page/15/'
+url_16 <- 'page/16/'
+url_17 <- 'page/17/'
+url_18 <- 'page/18/'
+url_19 <- 'page/19/'
+url_20 <- 'page/20/'
+url_21 <- 'page/21/'
+url_22 <- 'page/22/'
+url_23 <- 'page/23/'
+url_24 <- 'page/24/'
+url_25 <- 'page/25/'
+url_26 <- 'page/26/'
+url_27 <- 'page/27/'
+```
+
+```{r}
+full_url_1 <- base::paste0(base_url_1, base_url_2)
+full_url_2 <- base::paste0(base_url_1, url_2, base_url_2)
+full_url_3 <- base::paste0(base_url_1, url_3, base_url_2)
+full_url_4 <- base::paste0(base_url_1, url_4, base_url_2)
+full_url_5 <- base::paste0(base_url_1, url_5, base_url_2)
+full_url_6 <- base::paste0(base_url_1, url_6, base_url_2)
+full_url_7 <- base::paste0(base_url_1, url_7, base_url_2)
+full_url_8 <- base::paste0(base_url_1, url_8, base_url_2)
+full_url_9 <- base::paste0(base_url_1, url_9, base_url_2)
+full_url_10 <- base::paste0(base_url_1, url_10, base_url_2)
+full_url_11 <- base::paste0(base_url_1, url_11, base_url_2)
+full_url_12 <- base::paste0(base_url_1, url_12, base_url_2)
+full_url_13 <- base::paste0(base_url_1, url_13, base_url_2)
+full_url_14 <- base::paste0(base_url_1, url_14, base_url_2)
+full_url_15 <- base::paste0(base_url_1, url_15, base_url_2)
+full_url_16 <- base::paste0(base_url_1, url_16, base_url_2)
+full_url_17 <- base::paste0(base_url_1, url_17, base_url_2)
+full_url_18 <- base::paste0(base_url_1, url_18, base_url_2)
+full_url_19 <- base::paste0(base_url_1, url_19, base_url_2)
+full_url_20 <- base::paste0(base_url_1, url_20, base_url_2)
+full_url_21 <- base::paste0(base_url_1, url_21, base_url_2)
+full_url_22 <- base::paste0(base_url_1, url_22, base_url_2)
+full_url_23 <- base::paste0(base_url_1, url_23, base_url_2)
+full_url_24 <- base::paste0(base_url_1, url_24, base_url_2)
+full_url_25 <- base::paste0(base_url_1, url_25, base_url_2)
+full_url_26 <- base::paste0(base_url_1, url_26, base_url_2)
+full_url_27 <- base::paste0(base_url_1, url_27, base_url_2)
+```
+
+```{r}
+library(rvest)
+page_1 <- full_url_1 %>% read_html()  
+page_2 <- full_url_2 %>% read_html()
+page_3 <- full_url_3 %>% read_html()  
+page_4 <- full_url_4 %>% read_html()
+page_5 <- full_url_5 %>% read_html()  
+page_6 <- full_url_6 %>% read_html()
+page_7 <- full_url_7 %>% read_html()  
+page_8 <- full_url_8 %>% read_html()
+page_9 <- full_url_9 %>% read_html()  
+page_10 <- full_url_10 %>% read_html()
+page_11 <- full_url_11 %>% read_html()  
+page_12 <- full_url_12 %>% read_html()
+page_13 <- full_url_13 %>% read_html()  
+page_14 <- full_url_14 %>% read_html()
+page_15 <- full_url_15 %>% read_html()
+page_16 <- full_url_16 %>% read_html()
+page_17 <- full_url_17 %>% read_html()
+page_18 <- full_url_18 %>% read_html()
+page_19 <- full_url_19 %>% read_html()
+page_20 <- full_url_20 %>% read_html()
+page_21 <- full_url_21 %>% read_html()
+page_22 <- full_url_22 %>% read_html()
+page_23 <- full_url_23 %>% read_html()
+page_24 <- full_url_24 %>% read_html()
+page_25 <- full_url_25 %>% read_html()
+page_26 <- full_url_26 %>% read_html()
+page_27 <- full_url_27 %>% read_html()
+
+```
+
+```{r}
+
+library(rvest) 
+
+# get customer reviews starting from Page 1...27
+reviews_data_1 <- page_1 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_2 <- page_2 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_3 <- page_3 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_4 <- page_4 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_5 <- page_5 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_6 <- page_6 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_7 <- page_7 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_8 <- page_8 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_9 <- page_9 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_10 <- page_10 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_11 <- page_11 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_12 <- page_12 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_13 <- page_13 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_14 <- page_14 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_15 <- page_15 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_16 <- page_16 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_17 <- page_17 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_18 <- page_18 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_19 <- page_19 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_20 <- page_20 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_21 <- page_21 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_22 <- page_22 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_23 <- page_23 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_24 <- page_24 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_25 <- page_25 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_26 <- page_26 %>% html_element(css = '.position-content') %>% html_table()
+reviews_data_27 <- page_27 %>% html_element(css = '.position-content') %>% html_table()
+
+```
+
+```{r}
+reviews_data_text_content_page_1 <- html_nodes(page_1, ".text_content") %>% html_text()
+reviews_data_text_content_page_2 <- html_nodes(page_2, ".text_content") %>% html_text()
+reviews_data_text_content_page_3 <- html_nodes(page_3, ".text_content") %>% html_text()
+reviews_data_text_content_page_4 <- html_nodes(page_4, ".text_content") %>% html_text()
+reviews_data_text_content_page_5 <- html_nodes(page_5, ".text_content") %>% html_text()
+reviews_data_text_content_page_6 <- html_nodes(page_6, ".text_content") %>% html_text()
+reviews_data_text_content_page_7 <- html_nodes(page_7, ".text_content") %>% html_text()
+reviews_data_text_content_page_8 <- html_nodes(page_8, ".text_content") %>% html_text()
+reviews_data_text_content_page_9 <- html_nodes(page_9, ".text_content") %>% html_text()
+reviews_data_text_content_page_10 <- html_nodes(page_10, ".text_content") %>% html_text()
+reviews_data_text_content_page_11 <- html_nodes(page_11, ".text_content") %>% html_text()
+reviews_data_text_content_page_12 <- html_nodes(page_12, ".text_content") %>% html_text()
+reviews_data_text_content_page_13 <- html_nodes(page_13, ".text_content") %>% html_text()
+reviews_data_text_content_page_14 <- html_nodes(page_14, ".text_content") %>% html_text()
+reviews_data_text_content_page_15 <- html_nodes(page_15, ".text_content") %>% html_text()
+reviews_data_text_content_page_16 <- html_nodes(page_16, ".text_content") %>% html_text()
+reviews_data_text_content_page_17 <- html_nodes(page_17, ".text_content") %>% html_text()
+reviews_data_text_content_page_18 <- html_nodes(page_18, ".text_content") %>% html_text()
+reviews_data_text_content_page_19 <- html_nodes(page_19, ".text_content") %>% html_text()
+reviews_data_text_content_page_20 <- html_nodes(page_20, ".text_content") %>% html_text()
+reviews_data_text_content_page_21 <- html_nodes(page_21, ".text_content") %>% html_text()
+reviews_data_text_content_page_22 <- html_nodes(page_22, ".text_content") %>% html_text()
+reviews_data_text_content_page_23 <- html_nodes(page_23, ".text_content") %>% html_text()
+reviews_data_text_content_page_24 <- html_nodes(page_24, ".text_content") %>% html_text()
+reviews_data_text_content_page_25 <- html_nodes(page_25, ".text_content") %>% html_text()
+reviews_data_text_content_page_26 <- html_nodes(page_26, ".text_content") %>% html_text()
+reviews_data_text_content_page_27 <- html_nodes(page_27, ".text_content") %>% html_text()
+
+text_reviews_1 <- data.frame(reviews_data_text_content_page_1)
+text_reviews_2 <- data.frame(reviews_data_text_content_page_2)
+text_reviews_3 <- data.frame(reviews_data_text_content_page_3)
+text_reviews_4 <- data.frame(reviews_data_text_content_page_4)
+text_reviews_5 <- data.frame(reviews_data_text_content_page_5)
+text_reviews_6 <- data.frame(reviews_data_text_content_page_6)
+text_reviews_7 <- data.frame(reviews_data_text_content_page_7)
+text_reviews_8 <- data.frame(reviews_data_text_content_page_8)
+text_reviews_9 <- data.frame(reviews_data_text_content_page_9)
+text_reviews_10 <- data.frame(reviews_data_text_content_page_10)
+text_reviews_11 <- data.frame(reviews_data_text_content_page_1)
+text_reviews_12 <- data.frame(reviews_data_text_content_page_2)
+text_reviews_13 <- data.frame(reviews_data_text_content_page_3)
+text_reviews_14 <- data.frame(reviews_data_text_content_page_4)
+text_reviews_15 <- data.frame(reviews_data_text_content_page_5)
+text_reviews_16 <- data.frame(reviews_data_text_content_page_6)
+text_reviews_17 <- data.frame(reviews_data_text_content_page_7)
+text_reviews_18 <- data.frame(reviews_data_text_content_page_8)
+text_reviews_19 <- data.frame(reviews_data_text_content_page_9)
+text_reviews_20 <- data.frame(reviews_data_text_content_page_10)
+text_reviews_21 <- data.frame(reviews_data_text_content_page_1)
+text_reviews_22 <- data.frame(reviews_data_text_content_page_2)
+text_reviews_23 <- data.frame(reviews_data_text_content_page_3)
+text_reviews_24 <- data.frame(reviews_data_text_content_page_4)
+text_reviews_25 <- data.frame(reviews_data_text_content_page_5)
+text_reviews_26 <- data.frame(reviews_data_text_content_page_6)
+text_reviews_27 <- data.frame(reviews_data_text_content_page_7)
+
+colnames(text_reviews_1) <- c("Reviews")
+colnames(text_reviews_2) <- c("Reviews")
+colnames(text_reviews_3) <- c("Reviews")
+colnames(text_reviews_4) <- c("Reviews")
+colnames(text_reviews_5) <- c("Reviews")
+colnames(text_reviews_6) <- c("Reviews")
+colnames(text_reviews_7) <- c("Reviews")
+colnames(text_reviews_8) <- c("Reviews")
+colnames(text_reviews_9) <- c("Reviews")
+colnames(text_reviews_10) <- c("Reviews")
+colnames(text_reviews_11) <- c("Reviews")
+colnames(text_reviews_12) <- c("Reviews")
+colnames(text_reviews_13) <- c("Reviews")
+colnames(text_reviews_14) <- c("Reviews")
+colnames(text_reviews_15) <- c("Reviews")
+colnames(text_reviews_16) <- c("Reviews")
+colnames(text_reviews_17) <- c("Reviews")
+colnames(text_reviews_18) <- c("Reviews")
+colnames(text_reviews_19) <- c("Reviews")
+colnames(text_reviews_20) <- c("Reviews")
+colnames(text_reviews_21) <- c("Reviews")
+colnames(text_reviews_22) <- c("Reviews")
+colnames(text_reviews_23) <- c("Reviews")
+colnames(text_reviews_24) <- c("Reviews")
+colnames(text_reviews_25) <- c("Reviews")
+colnames(text_reviews_26) <- c("Reviews")
+colnames(text_reviews_27) <- c("Reviews")
+
+text_reviews <- rbind(text_reviews_1, text_reviews_2, text_reviews_3, text_reviews_4, text_reviews_5, text_reviews_6, text_reviews_7, text_reviews_8, text_reviews_9, text_reviews_10,text_reviews_11, text_reviews_12, text_reviews_13, text_reviews_14, text_reviews_15, text_reviews_16, text_reviews_17, text_reviews_18, text_reviews_19, text_reviews_20,text_reviews_21, text_reviews_22, text_reviews_23, text_reviews_24, text_reviews_25, text_reviews_26, text_reviews_27)
+
+text_reviews <- data.frame(text_reviews)  
+text_reviews <- text_reviews[-c(2160:2700), ]
+text_reviews <- data.frame(text_reviews) 
+colnames(text_reviews) <- c("Reviews")
+```
+
+
+```{r}
+# Extracting star ratings from page 1
+star_rating_elements_page_1 <- html_nodes(page_1, ".star.fill")
+star_rating_elements_page_2 <- html_nodes(page_2, ".star.fill")
+star_rating_elements_page_3 <- html_nodes(page_3, ".star.fill")
+star_rating_elements_page_4 <- html_nodes(page_4, ".star.fill")
+star_rating_elements_page_5 <- html_nodes(page_5, ".star.fill")
+star_rating_elements_page_6 <- html_nodes(page_6, ".star.fill")
+star_rating_elements_page_7 <- html_nodes(page_7, ".star.fill")
+star_rating_elements_page_8 <- html_nodes(page_8, ".star.fill")
+star_rating_elements_page_9 <- html_nodes(page_9, ".star.fill")
+star_rating_elements_page_10 <- html_nodes(page_10, ".star.fill")
+star_rating_elements_page_11 <- html_nodes(page_11, ".star.fill")
+star_rating_elements_page_12 <- html_nodes(page_12, ".star.fill")
+star_rating_elements_page_13 <- html_nodes(page_13, ".star.fill")
+star_rating_elements_page_14 <- html_nodes(page_14, ".star.fill")
+star_rating_elements_page_15 <- html_nodes(page_15, ".star.fill")
+star_rating_elements_page_16 <- html_nodes(page_16, ".star.fill")
+star_rating_elements_page_17 <- html_nodes(page_17, ".star.fill")
+star_rating_elements_page_18 <- html_nodes(page_18, ".star.fill")
+star_rating_elements_page_19 <- html_nodes(page_19, ".star.fill")
+star_rating_elements_page_20 <- html_nodes(page_20, ".star.fill")
+star_rating_elements_page_21 <- html_nodes(page_21, ".star.fill")
+star_rating_elements_page_22 <- html_nodes(page_22, ".star.fill")
+star_rating_elements_page_23 <- html_nodes(page_23, ".star.fill")
+star_rating_elements_page_24 <- html_nodes(page_24, ".star.fill")
+star_rating_elements_page_25 <- html_nodes(page_25, ".star.fill")
+star_rating_elements_page_26 <- html_nodes(page_26, ".star.fill")
+star_rating_elements_page_27 <- html_nodes(page_27, ".star.fill")
+
+
+star_ratings_page_1 <- sapply(star_rating_elements_page_1, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_2 <- sapply(star_rating_elements_page_2, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_3 <- sapply(star_rating_elements_page_3, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_4 <- sapply(star_rating_elements_page_4, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_5 <- sapply(star_rating_elements_page_5, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_6 <- sapply(star_rating_elements_page_6, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_7 <- sapply(star_rating_elements_page_7, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_8 <- sapply(star_rating_elements_page_8, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_9 <- sapply(star_rating_elements_page_9, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_10 <- sapply(star_rating_elements_page_10, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_11 <- sapply(star_rating_elements_page_11, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_12 <- sapply(star_rating_elements_page_12, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_13 <- sapply(star_rating_elements_page_13, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_14 <- sapply(star_rating_elements_page_14, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_15 <- sapply(star_rating_elements_page_15, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_16 <- sapply(star_rating_elements_page_16, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_17 <- sapply(star_rating_elements_page_17, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_18 <- sapply(star_rating_elements_page_18, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_19 <- sapply(star_rating_elements_page_19, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_20 <- sapply(star_rating_elements_page_20, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_21 <- sapply(star_rating_elements_page_21, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_22 <- sapply(star_rating_elements_page_22, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_23 <- sapply(star_rating_elements_page_23, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_24 <- sapply(star_rating_elements_page_24, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_25 <- sapply(star_rating_elements_page_25, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_26 <- sapply(star_rating_elements_page_26, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+star_ratings_page_27 <- sapply(star_rating_elements_page_27, function(x) as.numeric(gsub("[^0-9.]", "", html_text(x))))
+
+
+star_ratings_page_1 <- data.frame(star_ratings_page_1)
+star_ratings_page_2 <- data.frame(star_ratings_page_2)
+star_ratings_page_3 <- data.frame(star_ratings_page_3)
+star_ratings_page_4 <- data.frame(star_ratings_page_4)
+star_ratings_page_5 <- data.frame(star_ratings_page_5)
+star_ratings_page_6 <- data.frame(star_ratings_page_6)
+star_ratings_page_7 <- data.frame(star_ratings_page_7)
+star_ratings_page_8 <- data.frame(star_ratings_page_8)
+star_ratings_page_9 <- data.frame(star_ratings_page_9)
+star_ratings_page_10 <- data.frame(star_ratings_page_10)
+star_ratings_page_11 <- data.frame(star_ratings_page_11)
+star_ratings_page_12 <- data.frame(star_ratings_page_12)
+star_ratings_page_13 <- data.frame(star_ratings_page_13)
+star_ratings_page_14 <- data.frame(star_ratings_page_14)
+star_ratings_page_15 <- data.frame(star_ratings_page_15)
+star_ratings_page_16 <- data.frame(star_ratings_page_16)
+star_ratings_page_17 <- data.frame(star_ratings_page_17)
+star_ratings_page_18 <- data.frame(star_ratings_page_18)
+star_ratings_page_19 <- data.frame(star_ratings_page_19)
+star_ratings_page_20 <- data.frame(star_ratings_page_20)
+star_ratings_page_21 <- data.frame(star_ratings_page_21)
+star_ratings_page_22 <- data.frame(star_ratings_page_22)
+star_ratings_page_23 <- data.frame(star_ratings_page_23)
+star_ratings_page_24 <- data.frame(star_ratings_page_24)
+star_ratings_page_25 <- data.frame(star_ratings_page_25)
+star_ratings_page_26 <- data.frame(star_ratings_page_26)
+star_ratings_page_27 <- data.frame(star_ratings_page_27)
+
+colnames(star_ratings_page_1) <- c("Ratings")
+colnames(star_ratings_page_2) <- c("Ratings")
+colnames(star_ratings_page_3) <- c("Ratings")
+colnames(star_ratings_page_4) <- c("Ratings")
+colnames(star_ratings_page_5) <- c("Ratings")
+colnames(star_ratings_page_6) <- c("Ratings")
+colnames(star_ratings_page_7) <- c("Ratings")
+colnames(star_ratings_page_8) <- c("Ratings")
+colnames(star_ratings_page_9) <- c("Ratings")
+colnames(star_ratings_page_10) <- c("Ratings")
+colnames(star_ratings_page_11) <- c("Ratings")
+colnames(star_ratings_page_12) <- c("Ratings")
+colnames(star_ratings_page_13) <- c("Ratings")
+colnames(star_ratings_page_14) <- c("Ratings")
+colnames(star_ratings_page_15) <- c("Ratings")
+colnames(star_ratings_page_16) <- c("Ratings")
+colnames(star_ratings_page_17) <- c("Ratings")
+colnames(star_ratings_page_18) <- c("Ratings")
+colnames(star_ratings_page_19) <- c("Ratings")
+colnames(star_ratings_page_20) <- c("Ratings")
+colnames(star_ratings_page_21) <- c("Ratings")
+colnames(star_ratings_page_22) <- c("Ratings")
+colnames(star_ratings_page_23) <- c("Ratings")
+colnames(star_ratings_page_24) <- c("Ratings")
+colnames(star_ratings_page_25) <- c("Ratings")
+colnames(star_ratings_page_26) <- c("Ratings")
+colnames(star_ratings_page_27) <- c("Ratings")
+
+# Joining the data frames to make it easier for for-loop
+final_ratings<- rbind(star_ratings_page_1, star_ratings_page_2, star_ratings_page_3, star_ratings_page_4, star_ratings_page_5, star_ratings_page_6, star_ratings_page_7, star_ratings_page_8, star_ratings_page_9, star_ratings_page_10, star_ratings_page_11, star_ratings_page_12, star_ratings_page_13, star_ratings_page_14, star_ratings_page_15, star_ratings_page_16, star_ratings_page_17, star_ratings_page_18, star_ratings_page_19, star_ratings_page_20, star_ratings_page_21, star_ratings_page_22, star_ratings_page_23, star_ratings_page_24, star_ratings_page_25, star_ratings_page_26, star_ratings_page_27)
+
+colnames(final_ratings) <- c("Ratings")
+```
+
+```{r}
+provisional_data <- rbind(reviews_data_1, reviews_data_2, reviews_data_3, reviews_data_4, reviews_data_5, reviews_data_6, reviews_data_7, reviews_data_8, reviews_data_9, reviews_data_10, reviews_data_11, reviews_data_12, reviews_data_13, reviews_data_14, reviews_data_15, reviews_data_16, reviews_data_17, reviews_data_18, reviews_data_19, reviews_data_20, reviews_data_21, reviews_data_22, reviews_data_23, reviews_data_24, reviews_data_25, reviews_data_26, reviews_data_27)
+
+# final_data <- final_data[!grepl("Aircraft", final_data_till_page_10$X1),]
+
+```
+
+```{r}
+# Removing reviews that have incomplete information, since it is making an issue with data wrangling, although it's an inefficient way, that's the best solution so far, will try and add them later on.
+
+# final_data_till_page_10 <- final_data_till_page_10[-c(1:11, 60:70, 83:93, 142:152, 165:175, 188:195, 220:260, 273:283, 308:314, 327:344, 381:399, 424:433, 446:452, 465:473, 486:551, 564:573, 610:618, 655:665, 726:734, 747:757, 794:804, 841:850, 875:901, 938:946, 1043:1051, 1088:1096, 1109:1119, 1156:1176, 1189:1199, 1212:1248, 1261:1275, 1300:1318, 1343:1379, 1404:1414, 1427:1443, 1468:1478, 1515:1534, 1547:1553, 1566:1582, 1619:1649, 1662:1677, 1690:1698, 1711:1720, 1733:1742, 1803:1811, 1824:1833, 1858:1873, 1910:1918, 1931:1941, 1954:1974, 2011:2026, 2051:2078, 2091:2101, 2114:2119, 2192:2213, 2262:2280, 2305:2314, 2327:2335, 2360:2394, 2419:2437, 2450:2465, 2478:2486, 2511:2536, 2585:2591, 2604:2614, 2627:2645, 2658:2664, 2701:2742, 2755:2763, 2812:2822, 2847:2865, 2890:2923, 2972:2978, 3027:3044, 3057:3065, 3078:3088, 3101:3113, 3150:3158, 3183:3198, 3211:3221, 3246:3256, 3269:3287, 3300:3345, 3406:3414, 3439:3449, 3474:3489, 3514:3531, 3556:3564, 3625:3639, 3664:3697, 3794:3804, 3853:3878, 3891:3900, 3925:3955, 3968:3978, 4087:4105, 4130:4139, 4152:4183, 4196:4216, 4241:4254, 4267:4275, 4336:4354, 4379:4388, 4437:4445, 4458:4496, 4509:4528, 4577:4585, 4598:4632, 4657:4665, 4702:4723, 4772:4820, 4845:4855, 4868:4893, 4918:4939, 4952:4962, 4975:5036, 5073:5083, 5132:5177, 5226:5272, 5297:5331, 5368:5397, 5410:5447, 5472:5480, 5493:5497, 5522:5532, 5545:5610, 5635:5654, 5703:5727, 5752:5760, 5773:5811, 5824:5852, 5865:5893, 5906:5916, 5941:5968, 5981:5991, 6040:6060, 6073:6120, 6133:6153, 6166:6183, 6208:6218, 6243:6267, 6292:6302, 6315:6323, 6360:6370, 6419:6445, 6482:6492, 6553:6561, 6574:6594, 6631:6636, 6649:6653, 6666:6675, 6712:6726, 6739:6793, 6842:6850, 6875:6883, 6908:6913, 6986:7023, 7036:10638 ),]
+
+#final_data_till_page_10 <- final_data_till_page_10[-c(37:47, 60:70, 119:129, 142:152, 165:172, 197:237, 250:260, 285:291, 304:321, 358:366, 367:376, 401:410, 423:429, 442:450, 463:528, 541:550, 587:595, 632:642, 703:711, 724:734, 771:781, 818:827, 852:878, 915:923, 1020:1028, 1065:1073, 1086:1096, 1133:1153, 1166:1176, 1189:1225, 1238:1252, 1277:1295, 1320:1356, 1381:1391, 1404:1420, 1445:1455, 1492:1511, 1524:1530, 1543:1559, 1596:1626, 1639:1654, 1667:1675, 1688:1697, 1710:1719, 1780:1788, 1801:1810, 1835:1850, 1887:1895, 1908:1918, 1931:1951, 1988:2003, 2028:2055, 2068:2078, 2091:2096),]
+```
+## EDA: Data Wrangling for Reviews
+
+```{r}
+# 
+# # Data Wrangling for every X1 attribute; since the data is in vertical format it is necessary to make it in record format for further analysis
+# reviews_final_data <- data.frame(matrix(ncol = 13, nrow = 3000), stringsAsFactors = FALSE)
+# colnames(reviews_final_data) <- c('Aircraft', 'Type Of Traveller', 'Seat Type', 'Route','Date Flown', 'Seat Comfort', 'Cabin Staff Service', 'Food & Beverages', 'Inflight Entertainment', 'Ground Service', 'Wifi & Connectivity', 'Value For Money', 'Recommended')
+# ir = 1
+# ic = 1
+# for(i in 1:nrow(provisional_data)){
+#    if(ic >= 14){
+#      ir = ir+1
+#      ic <- 1
+#    }
+#   if(ic==1){
+#     if(grepl("Aircraft", provisional_data$X1[i] == TRUE)){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     } else{
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 2){
+#     if(grepl("Type Of Traveller", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 3){
+#     if(grepl("Seat Type", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     } else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 4){
+#     if(grepl("Route", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   }
+#   if(ic == 5){
+#     if(grepl("Date Flown", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 6){
+#     if(grepl("Seat Comfort", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 7){
+#     if(grepl("Cabin Staff Service", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 8){
+#     if(grepl("Food & Beverages", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 9){
+#     if(grepl("Inflight Entertainment", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 10){
+#     if(grepl("Ground Service", provisional_data$X1[i]) == TRUE){
+#       reviews_final_data[ir,ic] = provisional_data$X2[i]
+#       i = i + 1
+#     }else {
+#       reviews_final_data[ir,ic] = "9999"
+#     }
+#     ic = ic + 1
+#   } 
+#   if(ic == 11){
+#     if(grepl("Wifi & Connectivity", provisional_data$X1[i]) == TRUE){
+# #       reviews_final_data[ir,ic] = provisional_data$X2[i]
+# #       i = i + 1
+# #     }else {
+# #       reviews_final_data[ir,ic] = "9999"
+# #     }
+# #     ic = ic + 1
+# #   } 
+# #   if(ic == 12){
+# #     if(grepl("Value For Money", provisional_data$X1[i]) == TRUE){
+# #       reviews_final_data[ir,ic] = provisional_data$X2[i]
+# #       i = i + 1
+# #     }else {
+# #       reviews_final_data[ir,ic] = "9999"
+# #     }
+# #     ic = ic + 1
+# #   } 
+# #   if (ic == 13){
+# #     if(grepl("Recommended", provisional_data$X1[i]) == TRUE){
+# #       reviews_final_data[ir,ic] = provisional_data$X2[i]
+# #       i = i + 1
+# #     }else {
+# #       reviews_final_data[ir,ic] = "9999"
+# #     }
+# #     ic = ic + 1
+# #   }
+# # 
+# # }
+# 
+# # Define the column order based on column names
+# column_order <- c("Aircraft", "Type Of Traveller", "Seat Type", "Route",
+#                   "Date Flown", "Seat Comfort", "Cabin Staff Service",
+#                   "Food & Beverages", "Inflight Entertainment", "Ground Service",
+#                   "Wifi & Connectivity", "Value For Money", "Recommended")
+# 
+# # Initialize the output data frame with 9999 values
+# reviews_final_data <- data.frame(matrix(rep("9999", length(column_order) * nrow(provisional_data)),
+#                                         nrow = nrow(provisional_data),
+#                                         ncol = length(column_order),
+#                                         dimnames = list(NULL, column_order)))
+# 
+# # Loop through the input data and fill in the output data frame
+# ic <- 1
+# ir <- 1
+# for (i in 1:nrow(provisional_data)) {
+#   if (ic > length(column_order)) {
+#     ir <- ir + 1
+#     ic <- 1
+#   }
+#   if (grepl(column_order[ic], provisional_data$X1[i])) {
+#     reviews_final_data[ir, ic] <- provisional_data$X2[i]
+#     ic <- ic + 1
+#   }
+# }
+
+
+# Code iteration perfected
+# Initialize reviews_final_data with "9999"
+reviews_final_data <- matrix(ncol = 13, nrow = 2159)
+# Loop through each row of provisional_data and populate reviews_final_data
+ir <- 1
+ic <- 1
+for(i in 1:nrow(provisional_data)){
+  
+  # Check if ic is greater than or equal to 14
+  if(ic >= 14){
+    ir <- ir + 1
+    ic <- 1
+  }
+  
+  # Populate the corresponding element of reviews_final_data based on the column header
+  if(provisional_data$X1[i] == "Aircraft"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 1] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Type Of Traveller"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 2] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Seat Type"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 3] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Route"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 4] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Date Flown"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 5] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Seat Comfort"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 6] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Cabin Staff Service"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 7] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Food & Beverages"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 8] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Inflight Entertainment"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 9] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Ground Service"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 10] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Wifi & Connectivity"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 11] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Value For Money"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 12] <- provisional_data$X2[i]
+  } else if(provisional_data$X1[i] == "Recommended"){
+    if(ir > 2159)
+  {
+    break
+  }
+    reviews_final_data[ir, 13] <- provisional_data$X2[i]
+  }
+  
+  # Increment ic
+  ic <- ic + 1
+}
+
+
+
+# Removing the columns since they do not make any sense, we have separate star ratings columns that have been implemented below.
+reviews_final_data <- reviews_final_data[,-c(6:12)]
+reviews_final_data <- data.frame(reviews_final_data)
+colnames(reviews_final_data) <- c("Aircraft", "Type.Of.Traveller", "Seat.Type", "Route", "Date Flown", "Recommended")
+
+```
+
+## EDA: Data Wrangling for Star Ratings
+
+```{r}
+#Data Wrangling for Star Ratings
+revised_ratings <- data.frame(matrix(ncol = 7, nrow = 2159))
+colnames(revised_ratings) <- c('Seat Comfort', 'Cabin Staff Service', 'Food & Beverages', 'Inflight Entertainment', 'Ground Service', 'Wifi & Connectivity', 'Value For Money')
+ir = 1
+ic = 1
+for(i in 1:nrow(final_ratings)) {       # for-loop over columns
+ revised_ratings[ir, ic] <- final_ratings[i, 1]
+    if (i%%7==0) {
+      ir <- ir+1
+      ic <- 1
+    }
+    else if(ir == 2160){
+      break
+  } else {
+      ic <- ic+1
+    }
+
+}
+
+revised_ratings <- revised_ratings[-2160,]
+
+```
+
+## Data Integration
+
+```{r}
+
+# Combining the three data frames  (signifies other attributes apart from star ratings), revised_ratings (signifies star ratings), and text_reviews_till_page_10 (Signifies customer reviews)
+reviews <- cbind(reviews_final_data, revised_ratings, text_reviews)
+
+```
+
+## Data Cleaning 
+
+```{r}
+library(magrittr)
+# Adding a new column to calculate the total score
+ratings_cols <- c("Seat Comfort", "Cabin Staff Service", "Food & Beverages",
+                  "Inflight Entertainment", "Ground Service", "Wifi & Connectivity", "Value For Money")
+
+# Add up the values in the five columns and calculate the mean
+  reviews <- reviews %>% mutate(`Total Rating` = rowSums(reviews[, ratings_cols])/7)
+```
+
+
+```{r}
+# The reviews column has a shabby format, for example the review has the verification before the review starts, we can separately create a verification column to check the integrity of the review
+reviews <- reviews %>% mutate(Verification = ifelse(grepl("✅ Trip Verified", Reviews), "Trip Verified", ifelse(grepl("Not Verified", Reviews), "Not Verified", NA)))
+
+# Remove the substring from the original column
+reviews$Reviews  <- gsub("✅ Trip Verified \\| ", "", reviews$Reviews)
+reviews$Reviews  <- gsub("✅ Trip Verified |", "", reviews$Reviews)
+reviews$Reviews <- gsub("Not Verified \\|","", reviews$Reviews)
+reviews$Reviews <- gsub("|","",reviews$Reviews)
+```
+
+```{r}
+# We can break down the "Route" column into two parts: "Origin" and "Destination"
+library(tidyr)
+Route_updated <- data.frame(reviews$Route)
+# separate "Route" column into "Origin location" and "Destination"
+Route_updated <- separate(Route_updated, col = reviews.Route, into = c("Origin", "Destination"), sep = c(" to ", "via"))
+head(Route_updated)
+
+reviews <- reviews[,-4]
+
+reviews <- cbind(reviews, Route_updated)
+```
+
+```{r}
+# Formatting the Date Flown column in the Data frame.
+class(reviews$`Date Flown`)
+library(lubridate)
+# Convert Date Flown to MM-YY format
+reviews$`Date Flown` <- dmy(paste0("01-", reviews$`Date Flown`))
+                            
+reviews$`Date Flown` <- format(reviews$`Date Flown`, "%m-%y")
+
+head(reviews$`Date Flown`)
+```
+
+
+```{r}
+# Identifying the missing values
+cat("There are", sum(is.na(reviews$Aircraft)), "missing data values in 'Aircraft' column.\n")
+cat("There are", sum(is.na(reviews$Type.Of.Traveller)), "missing data values in 'Type of traveller' column.\n")
+cat("There are", sum(is.na(reviews$Seat.Type)), "missing data values in 'Seat Type' column.\n")
+cat("There are", sum(is.na(reviews$`Date Flown`)), "missing data values in 'Date Flown' column.\n")
+cat("There are", sum(is.na(reviews$Recommended)), "missing data values in 'Recommended' column.\n")
+cat("There are", sum(is.na(reviews$`Seat Comfort`)), "missing data values in 'Seat Comfort' column.\n")
+cat("There are", sum(is.na(reviews$`Cabin Staff Service`)), "missing data values in 'Cabin Staff Services' column.\n")
+cat("There are", sum(is.na(reviews$`Food & Beverages`)), "missing data values in 'Food & Beverages' column.\n")
+cat("There are", sum(is.na(reviews$`Inflight Entertainment`)), "missing data values in 'Inflight Entertainment' column.\n")
+cat("There are", sum(is.na(reviews$`Ground Service`)), "missing data values in 'Ground Service' column.\n")
+cat("There are", sum(is.na(reviews$`Wifi & Connectivity`)), "missing data values in 'Wifi & Connectivity' column.\n")
+cat("There are", sum(is.na(reviews$`Value For Money`)), "missing data values in 'Value for Money' column.\n")
+cat("There are", sum(is.na(reviews$Reviews)), "missing data values in 'Reviews' column.\n")
+cat("There are", sum(is.na(reviews$Verification)), "missing data values in 'Verification' column.\n")
+cat("There are", sum(is.na(reviews$Origin)), "missing data values in 'Origin' column.\n")
+cat("There are", sum(is.na(reviews$Destination)), "missing data values in 'Destination' column.\n")
+```
+
+```{r}
+# Removing the 'Aircraft Column' since it doesn't contain any valuable information or there are 1621 missing values.
+reviews <- reviews[,-1]
+
+# Replacing the NAs in 'Type of Traveller' to random values from "Solo Leisure", "Couple Leisure", "Family Leisure" and "Business".
+reviews$Type.Of.Traveller <- ifelse(is.na(reviews$Type.Of.Traveller), sample(c("Solo Leisure", "Business", "Couple Leisure", "Family Leisure"), 1), reviews$Type.Of.Traveller)
+
+reviews$Seat.Type <- ifelse(is.na(reviews$Seat.Type), sample(c("Economy Class", "First Class", "Premium Economy", "Business Class"),1), reviews$Seat.Type)
+
+# Replacing the NAs in 'Date Flown' to random values between April 2015 to September 2022
+months <- seq(from = ymd("2015-04-01"), to = ymd("2022-09-01"), by = "months")
+months_str <- format(months, "%m-%y")
+
+reviews$`Date Flown`[is.na(reviews$`Date Flown`)] <- sample(months_str, sum(is.na(reviews$`Date Flown`)), replace = TRUE)
+
+# Replacing both NA values to "Not Verified"
+reviews$Verification[is.na(reviews$Verification)] = "Not Verified"
+
+# Origin and Destination NA values cleaning
+reviews <- reviews[complete.cases(reviews[c("Origin", "Destination")]),]
+
+# Destination additional locations cleaning
+reviews$Final.Destination <- gsub("(.*via\\s)(\\w+)(\\s\\&\\s)(\\w+)(.*)", "\\2, \\4", reviews$Destination)
+reviews$Final.Destination <- gsub("(.*via\\s)(\\w+)(.*)", "\\2", reviews$Final.Destination)
+reviews <- reviews[,-16]
+
+# Replace specific destination values in Final.Destination column
+reviews$Final.Destination <- ifelse(grepl("New", reviews$Final.Destination), "New York",  ifelse(grepl("Salt", reviews$Final.Destination), "Salt Lake City",reviews$Final.Destination))
+
+
+```
+
+```{r}
+cat("There are", sum(is.na(reviews$Type.Of.Traveller)), "missing data values in 'Type of traveller' column.\n")
+cat("There are", sum(is.na(reviews$Seat.Type)), "missing data values in 'Seat Type' column.\n")
+cat("There are", sum(is.na(reviews$Route)), "missing data values in 'Route' column.\n")
+cat("There are", sum(is.na(reviews$`Date Flown`)), "missing data values in 'Date Flown' column.\n")
+cat("There are", sum(is.na(reviews$Recommended)), "missing data values in 'Recommended' column.\n")
+cat("There are", sum(is.na(reviews$`Seat Comfort`)), "missing data values in 'Seat Comfort' column.\n")
+cat("There are", sum(is.na(reviews$`Cabin Staff Service`)), "missing data values in 'Cabin Staff Services' column.\n")
+cat("There are", sum(is.na(reviews$`Food & Beverages`)), "missing data values in 'Food & Beverages' column.\n")
+cat("There are", sum(is.na(reviews$`Inflight Entertainment`)), "missing data values in 'Inflight Entertainment' column.\n")
+cat("There are", sum(is.na(reviews$`Ground Service`)), "missing data values in 'Ground Service' column.\n")
+cat("There are", sum(is.na(reviews$`Wifi & Connectivity`)), "missing data values in 'Wifi & Connectivity' column.\n")
+cat("There are", sum(is.na(reviews$`Value For Money`)), "missing data values in 'Value for Money' column.\n")
+cat("There are", sum(is.na(reviews$Reviews)), "missing data values in 'Reviews' column.\n")
+cat("There are", sum(is.na(reviews$Verification)), "missing data values in 'Verification' column.\n")
+cat("There are", sum(is.na(reviews$Origin)), "missing data values in 'Origin' column.\n")
+cat("There are", sum(is.na(reviews$Destination)), "missing data values in 'Destination' column.\n")
+```
+
+
+```{r}
+summary(reviews)
+```
+
+```{r}
+dim(reviews)
+```
+
+```{r}
+Total_ratings_Business <- 0
+for(i in 1:nrow(reviews)){
+if(reviews$Type.Of.Traveller[i] == "Business"){
+  Total_ratings_Business <- Total_ratings_Business + reviews$`Seat Comfort`[i] + reviews$`Cabin Staff Service`[i]+reviews$`Food & Beverages`[i] + reviews$`Inflight Entertainment`[i] + reviews$`Ground Service`[i] + reviews$`Wifi & Connectivity`[i] + reviews$`Value For Money`[i]
+}}
+Total_ratings_Business
+
+Total_ratings_Couple <- 0
+for(i in 1:nrow(reviews)){
+if(reviews$Type.Of.Traveller[i] == "Couple Leisure"){
+  Total_ratings_Couple <- Total_ratings_Couple + reviews$`Seat Comfort`[i] + reviews$`Cabin Staff Service`[i]+reviews$`Food & Beverages`[i] + reviews$`Inflight Entertainment`[i] + reviews$`Ground Service`[i] + reviews$`Wifi & Connectivity`[i] + reviews$`Value For Money`[i]
+}}
+Total_ratings_Couple
+
+Total_ratings_Family <- 0
+for(i in 1:nrow(reviews)){
+if(reviews$Type.Of.Traveller[i] == "Family Leisure"){
+  Total_ratings_Family <- Total_ratings_Family + reviews$`Seat Comfort`[i] + reviews$`Cabin Staff Service`[i]+reviews$`Food & Beverages`[i] + reviews$`Inflight Entertainment`[i] + reviews$`Ground Service`[i] + reviews$`Wifi & Connectivity`[i] + reviews$`Value For Money`[i]
+}}
+Total_ratings_Family
+
+Total_ratings_Solo <- 0
+for(i in 1:nrow(reviews)){
+if(reviews$Type.Of.Traveller[i] == "Solo Leisure"){
+  Total_ratings_Solo <- Total_ratings_Solo + reviews$`Seat Comfort`[i] + reviews$`Cabin Staff Service`[i]+reviews$`Food & Beverages`[i] + reviews$`Inflight Entertainment`[i] + reviews$`Ground Service`[i] + reviews$`Wifi & Connectivity`[i] + reviews$`Value For Money`[i]
+}}
+Total_ratings_Solo
+```
+
+
+#Word Cloud
+```{r}
+# install.packages("wordcloud")
+# library(wordcloud)
+# install.packages("RColorBrewer")
+# library(RColorBrewer)
+# install.packages("tm")
+# library(tm)
+# install.packages("openNLP")
+# install.packages("rJava")
+# #library(openNLP)
+# install.packages("NLP")
+# library(NLP)
+# 
+# # Define a function to extract only adjectives from the text data
+# adj_extractor <- function(text) {
+#   word_tokenizer <- Maxent_Word_Token_Annotator()
+#   pos_tag_annotator <- Maxent_POS_Tag_Annotator()
+#   text <- as.String(text)
+#   annotations <- NLP::annotate(text, list(word_tokenizer, pos_tag_annotator))
+#   adjectives <- subset(annotations$POS, Type == "JJ")
+#   adj_words <- text[adjectives]
+#   return(adj_words)
+# }
+# 
+# # Apply the adjective extractor to the text data
+# text_data <- reviews$Reviews
+# text_data <- gsub("flights", "", text_data)
+# text_data <- gsub("plane", "", text_data)
+# text_data <- gsub("airport", "", text_data)
+# text_data <- gsub("get", "", text_data)
+# text_data <- gsub("airline", "", text_data)
+# text_data <- gsub("airlines", "", text_data)
+# text_data <- gsub("flight", "", text_data)
+# 
+# adj_text_data <- sapply(text_data, adj_extractor)
+# adj_text_data <- unlist(adj_text_data)
+# adj_text_data <- gsub("[^[:alnum:][:space:]]*", "", adj_text_data)
+# 
+# docs <- Corpus(VectorSource(adj_text_data))
+# 
+# docs <- docs %>%
+#   tm_map(removeNumbers) %>%
+#   tm_map(removePunctuation) %>%
+#   tm_map(stripWhitespace)
+# 
+# dtm <- TermDocumentMatrix(docs)
+# matrix <- as.matrix(dtm)
+# words <- sort(rowSums(matrix), decreasing=TRUE)
+# df <- data.frame(word = names(words), freq = words)
+# 
+# set.seed(1234)
+# wordcloud(
+#   words = df$word,
+#   freq = df$freq,
+#   min.freq = 1,
+#   max.words = 200,
+#   random.order = FALSE,
+#   rot.per = 0.35,
+#   colors = brewer.pal(8, "Dark2")
+# )
+
+#install.packages("wordcloud")
+library(wordcloud)
+#install.packages("RColorBrewer")
+library(RColorBrewer)
+#install.packages("tm")
+library(tm)
+
+text_data <- reviews$Reviews
+text_data <- gsub("flights","",text_data)
+text_data <- gsub("plane", "", text_data)
+text_data <- gsub("airport", "", text_data)
+text_data <- gsub("get","", text_data)
+text_data <- gsub("airline", "", text_data)
+text_data <- gsub("airlines","", text_data)
+text_data <- gsub("flight", "", text_data)
+docs <- Corpus(VectorSource(text_data))
+
+
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("english"))
+
+dtm <- TermDocumentMatrix(docs)
+matrix <- as.matrix(dtm)
+words <- sort(rowSums(matrix),decreasing=TRUE)
+df <- data.frame(word = names(words),freq=words)
+
+set.seed(1234)
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+```{r}
+library(ggplot2)
+ggplot(reviews, aes(x = `Type.Of.Traveller`, y = `Total Rating`, col=`Type.Of.Traveller`)) +
+   geom_col() +
+   xlab("Type of Traveler") +
+   ylab("Total Ratings") +
+   ggtitle("By travel type")
+
+
+```
+
+```{r}
+
+library(ggplot2)
+ggplot(reviews, aes(x = `Seat.Type`, y = `Total Rating`, col=`Seat.Type`)) +
+ geom_col() +
+  xlab("Seat Type") +
+  ylab("Total Ratings") +
+  ggtitle("By Seat type")
+
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(reviews, aes(x = `Verification`, y = `Total Rating`, col=`Total Rating`)) +
+ geom_col() +
+  xlab("Seat Type") +
+  ylab("Total Ratings") +
+  ggtitle("By Verification")
+
+```
+
+
+```{r}
+type_counts <- table(reviews$Type.Of.Traveller)
+type_df <- data.frame(Type.Of.Traveller = names(type_counts),
+count = as.numeric(type_counts))
+ggplot(type_df, aes(x = "", y = count, fill = Type.Of.Traveller)) +
+geom_bar(width = 1, stat = "identity") +
+coord_polar("y", start = 0) +
+scale_fill_discrete(name = "Type of traveller") +
+ggtitle("Type of traveler distribution") +
+theme(plot.title = element_text(hjust = 0.5),
+axis.line.y = element_blank(),
+axis.text.y = element_blank(),
+axis.ticks.y = element_blank()) +
+geom_text(aes(label = count), position = position_stack(vjust = 0.5))
+
+```
+
+```{r}
+library(ggplot2)
+library(reshape2)
+
+corr_data <- cor(reviews[, c("Seat Comfort", "Cabin Staff Service", "Food & Beverages",
+"Inflight Entertainment", "Ground Service", "Wifi & Connectivity")])
+
+melted_corr <- melt(corr_data)
+ggplot(melted_corr, aes(x = Var1, y = value, fill = Var2)) +
+geom_col() +
+scale_fill_discrete(name = "Amenities") +
+theme_minimal() +
+ggtitle("Correlation between Amenities") +
+xlab("Amenities") +
+ylab("Correlation") +
+theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+axis.title = element_text(size = 14),
+axis.text.x = element_text(angle = 45, hjust = 1),
+legend.title = element_text(size = 12),
+legend.text = element_text(size = 12),
+legend.position = "bottom")
+
+```
+
+
+```{r}
+library(ggplot2)
+
+# create the plot
+ggplot(reviews, aes(x = Verification, fill = Recommended)) +
+  geom_bar() +
+  scale_fill_discrete(name = "Recommended") +
+  theme_minimal() +
+  ggtitle("Verification vs Recommended") +
+  xlab("Verification") +
+  ylab("Count") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.position = "bottom")
+
+ 
+```
+ 
+
+
+```{r}
+# # Create a box plot for Verification vs Total Ratings
+reviews %>% ggplot(aes(Verification, `Total Rating`)) + geom_boxplot() + geom_point(alpha = 0.5, aes(size = `Total Rating`, color = reviews$`Type Of Traveler`))
+
+```
+
+
+```{r}
+#Correlation plot between ameneties
+library(corrplot)
+
+amenities_df <- reviews[, c(5:11)]
+col <- colorRampPalette(c("Black", "lightblue", "lightgreen"))
+
+corrplot(
+  cor(amenities_df),
+  method = "ellipse",
+  col = col(500),
+  addCoef.col = "black",
+  tl.col = "black"
+)
+
+
+```
+
+```{r}
+pairs(amenities_df, main = "Ameneties", pch = 21, bg = c("#CFB87C"))
+```
+
+```{r}
+library(ggplot2)
+ggplot(reviews, aes(x = `Date Flown`, fill = Recommended)) +
+geom_bar(position = "dodge") +
+scale_fill_manual(values = c("yes" = "green", "no" = "red")) +
+labs(x = "Date Flown", y = "Count", fill = "Recommendation")
+ 
+```
+# K-Means
+```{r}
+# install.packages("factoextra")
+# load required libraries
+# Load required libraries
+library(factoextra)
+```
+
+```{r}
+# Prerequisites
+Reviews.Labels <- reviews$Type.Of.Traveller
+table(Reviews.Labels)
+reviews_kmeans_clustering <- reviews[5:10]
+head(reviews_kmeans_clustering)
+```
+
+```{r}
+# Scale the data
+reviews_kmeans_clustering_scale <- scale(reviews_kmeans_clustering)
+```
+
+```{r}
+# Calculate K for K-Means using Elbow Method and Silhouette Method
+fviz_nbclust(reviews_kmeans_clustering_scale, kmeans, method = "wss") + geom_vline(xintercept = 4, linetype = 2) + labs(subtitle = "Elbow Method")
+
+fviz_nbclust(reviews_kmeans_clustering_scale, kmeans, method = "silhouette") + labs(subtitle = "Silhouette Method")
+
+```
+
+```{r}
+# Calculate Distance
+reviews.dist <- dist(reviews_kmeans_clustering_scale)
+head(reviews.dist)
+```
+
+```{r}
+# Perform K-Means
+km.out <- kmeans(reviews_kmeans_clustering_scale, centers = 4, nstart = 1000)
+print(km.out)
+# 51.6 % classification or identification of an observation with a group - could be better.
+```
+
+```{r}
+# Creating a new dataframe to assign the values of Type of Traveler
+reviews_tot <- reviews[1]
+names(reviews_tot) <- c("Type.Of.Traveler")
+reviews_tot$Type.Of.Traveler <- substr(reviews_tot$Type.Of.Traveler, 1, 1)
+
+rownames(reviews_kmeans_clustering_scale) <- paste(reviews_tot$Type.Of.Traveler, 1:dim(reviews_tot)[1], sep = "_")      
+
+head(reviews_kmeans_clustering_scale)
+
+```
+
+
+```{r}
+km.out <- kmeans(reviews_kmeans_clustering_scale, centers = 3, nstart = 100)
+
+km.clusters <- km.out$clusters
+
+p1 <- fviz_cluster(list(data=reviews_kmeans_clustering_scale, cluster = km.out$cluster)) + ggtitle("k=3")
+
+km.out <- kmeans(reviews_kmeans_clustering_scale, centers = 4, nstart = 100)
+
+km.clusters <- km.out$clusters
+
+p2 <- fviz_cluster(list(data=reviews_kmeans_clustering_scale, cluster = km.out$cluster)) + ggtitle("k=4")
+
+km.out <- kmeans(reviews_kmeans_clustering_scale, centers = 7, nstart = 100)
+
+km.clusters <- km.out$clusters
+
+p3 <- fviz_cluster(list(data=reviews_kmeans_clustering_scale, cluster = km.out$cluster)) + ggtitle("k=7")
+
+km.out <- kmeans(reviews_kmeans_clustering_scale, centers = 8, nstart = 100)
+
+km.clusters <- km.out$clusters
+
+p4 <- fviz_cluster(list(data=reviews_kmeans_clustering_scale, cluster = km.out$cluster)) + ggtitle("k=8")
+
+library(gridExtra)
+grid.arrange(p1,p2,p3,p4, nrow=2)
+```
+
+# Hierarchical Clustering
+
+```{r}
+# Prerequisites
+Reviews.Labels <- reviews$Type.Of.Traveller
+table(Reviews.Labels)
+reviews_hierarchical_clustering <- reviews[5:11]
+```
+
+```{r}
+# Scale the data
+reviews_hierarchical_clustering_scale <- scale(reviews_hierarchical_clustering)
+```
+
+```{r}
+# Distance Calculating using Cosine Similarity
+cosine_matrix <- as.matrix(reviews_hierarchical_clustering_scale)
+reviews_cosine_distance <- 1 - crossprod(cosine_matrix) / sqrt(colSums(cosine_matrix^2) %*% t(colSums(cosine_matrix^2)))
+hc.out_reviews <- hclust(as.dist(reviews_cosine_distance), method = "ward.D")
+# hc.out_reviews
+hierarchical.dist <- as.dist(reviews_cosine_distance)
+```
+
+```{r}
+# Dendogram
+hc.out_reviews <- hclust(hierarchical.dist, method = "ward.D")
+plot(hc.out_reviews)
+rect.hclust(hc.out_reviews, k=3, border = 2:5)
+
+```
+
+# Association Rule Mining
+```{r}
+#install.packages("arules")
+#install.packages("arulesViz")
+library(arules)
+library(arulesViz)
+```
+
+```{r}
+reviews_apriori <- reviews[, c(1,2,4,13)]
+summary(reviews_apriori)
+```
+```{r}
+rule1 <- apriori(reviews_apriori, parameter=list(suppor = 0.002, confidence = 0.5)) 
+```
+
+```{r}
+inspect(head(sort(rule1, by = "lift"), 20))
+```
+
+```{r}
+plot(rule1)
+```
+
+```{r}
+plot(rule1, method = "grouped")
+```
+```{r}
+inspect(head(sort(rule1, by = "confidence"), 20))
+```
+
+```{r}
+inspect(head(sort(rule1, by = "support"), 20))
+```
+
+```{r}
+rule2 <- apriori(reviews_apriori, parameter=list(suppor = 0.005, confidence = 0.75)) 
+```
+
+```{r}
+inspect(head(sort(rule2, by = "lift"), 20))
+```
+
+```{r}
+inspect(head(sort(rule2, by = "confidence"), 20))
+```
+
+```{r}
+plot(rule2)
+plot(rule2, method = "grouped")
+```
+
