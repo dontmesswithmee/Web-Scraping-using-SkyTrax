@@ -1,0 +1,121 @@
+---
+title: 'Regression Module 5'
+author: "Rahul Chauhan"
+date: "2023-04-21"
+output: html_document
+---
+
+# Data and it's meaning
+
+```{r}
+# Load the required library
+library(dplyr)
+
+stat_reviews <- read.csv("/Users/rahul.chauhan/Desktop/airline_reviews_cleaned.csv")
+head(stat_reviews)
+summary(stat_reviews)
+
+# Convert Recommended column from Yes/No to 1/0
+stat_reviews <- stat_reviews %>% mutate(Recommended = ifelse(Recommended == "Yes", 1, 0))
+```
+
+# Exploratory Data Analysis and Basic Regression
+
+```{r}
+# Note: There are no continuous variables in the given dataframe.
+library(ggplot2)
+library(gridExtra)
+par(mfrow = c(2, 2))
+plt1 <- ggplot(data = stat_reviews, aes(x = Seat.Comfort, y = Value.For.Money)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Seat Comfort vs Value For Money")
+plt2 <- ggplot(data = stat_reviews, aes(x = Inflight.Entertainment, y = Value.For.Money)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Inflight Entertainment vs Value For Money")
+plt3 <- ggplot(data = stat_reviews, aes(x = Food.Beverages, y = Value.For.Money)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Food & Beverages vs Value for Money")
+plt4 <- ggplot(data = stat_reviews, aes(x = Cabin.Staff.Services, y = Value.For.Money)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Cabin Staff Services vs Value for Money")
+plt5 <- ggplot(data = stat_reviews, aes(x = Ground.Service, y = Value.For.Money)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Ground Service vs Value For Money")
+plt6 <- ggplot(data = stat_reviews, aes(x = Wifi, y = Seat.Comfort)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Wifi vs Seat Comfort")
+grid.arrange(plt1, plt2, plt3, plt4, plt5, plt6, ncol = 3)
+```
+
+```{r}
+library(corrplot)
+
+ameneties <-stat_reviews[c("Seat.Comfort", "Cabin.Staff.Services", "Food.Beverages", "Inflight.Entertainment", "Ground.Service", "Wifi", "Value.For.Money", "Recommended")]
+col4 = colorRampPalette(c("black", "darkgrey", "grey","#CFB87C"))
+corrplot(cor(ameneties), method = "ellipse", col=col4(100), addCoef.col = "black", tl.col = "black")
+```
+
+# Basic Linear Regression
+
+Since, there is a moderately strong correlation between Wifi and Seat.Comfort, let's perform a basic regression to get insights.
+
+```{r}
+lm_basic <- lm(Seat.Comfort ~ Wifi, data = stat_reviews)
+summary(lm_basic)
+```
+
+The residuals have a mean of 0, indicating that the model is unbiased. The residuals have a standard deviation of 1.13, indicating that the model's predictions have an average error of 1.13 units from the actual values.
+
+Overall, the output suggests that there is a statistically significant positive relationship between Seat.Comfort and Wifi. As Wifi availability increases, the comfort of the seat tends to increase as well. However, the model explains only a small portion of the variation in Seat.Comfort.
+
+However, the model can only explain a small portion of the variation in seat comfort, and there may be other factors besides Wifi that affect seat comfort. The model also indicates that the predicted comfort level of the seat may be off by about 1.13 units from the actual comfort level.
+
+# Multiple Linear Regression
+
+To perform MLR, use Value.For.Money as response and all the other numeric variables as predictors.
+
+```{r}
+lm_stat <- lm(Value.For.Money ~ Seat.Comfort + Cabin.Staff.Services + Food.Beverages + Inflight.Entertainment + Ground.Service + Wifi, data = stat_reviews)
+summary(lm_stat)
+```
+
+The model identifies six predictor variables that are significantly related to the value for money rating: Seat comfort, Cabin staff services, Food beverages, Ground service, Wifi, with the exception of Inflight entertainment, which is not significant. Therefore, improving these features can potentially improve the value for money rating of an airline.
+
+Secondly, the estimated coefficients show the direction and magnitude of the relationship between each predictor variable and the value for money rating. For example, the Cabin staff services rating has the highest coefficient (0.366) among all predictor variables, indicating that improving cabin staff services by one unit is associated with a 0.366-unit increase in the value for money rating.
+
+Thirdly, the R-squared value indicates that the predictor variables explain only 23.06% of the variation in the value for money rating, which implies that other factors beyond the given variables also influence the value for money rating.
+
+Overall, this output can provide insights for airline companies to make informed decisions in enhancing their service quality and customer satisfaction, specifically with regards to the features that significantly impact the value for money rating.
+
+```{r}
+par(mfrow = c(2,2))
+plot(lm_stat)
+```
+
+## Violations of Assumptions of Linearity:
+
+Note: Initially, we assume that the assumptions of linearity are met, and then move on to code for linear regression. However, checking the plots for violation of assumptions of linearity tells us that all the assumptions including normality, homoskedasticity, linearity and independence are violated in the above plots. It can be concluded that linear regression is not fit for the above data.
+
+# Non-Parametric Regression
+
+```{r}
+model_np <- loess(Value.For.Money ~ Seat.Comfort + Cabin.Staff.Services + Food.Beverages + Inflight.Entertainment, data = stat_reviews)
+
+# print the summary of the model
+summary(model_np)
+```
+
+The number of observations used in the model is 1952. The equivalent number of parameters is 15.15 which indicates that the model has used a relatively large number of parameters to fit the data.
+
+The residual standard error of the model is 1.162 which represents the average difference between the predicted and actual values of the dependent variable. A smaller residual standard error indicates a better fit of the model to the data.
+
+The span parameter is set to 0.75, which determines the proportion of data points that will be used to estimate the loess function at each point. The degree parameter is set to 2, which specifies that a quadratic fit will be used to model the relationship between the independent and dependent variables.
+
+The family parameter is set to gaussian, which specifies the type of error distribution to assume for the model. The surface parameter is set to interpolate which indicates that a smooth function will be used to model the relationship between the variables.
+
+The normalize parameter is set to TRUE, which indicates that the predictor variables will be normalized to have zero mean and unit variance. The parametric parameter is set to FALSE, which indicates that the model does not assume a particular functional form for the relationship between the variables.
+
+**Note: The non-parametric regression also failed to explain the given data significantly since all the variables in the above input are categorical, meaning they lie between 1-5. Given the scenario, it may have been the reason for poor performance of the model.**
+
+# Logistic Regression
+
+```{r}
+logistic_model <- glm(Recommended ~ Seat.Comfort + Inflight.Entertainment + Wifi + 
+             Cabin.Staff.Services + Ground.Service + Food.Beverages + Value.For.Money,
+             data = stat_reviews, family = binomial)
+
+# Print the summary of the model
+summary(logistic_model)
+```
+
+However, the model coefficients output suggests that all variables except the intercept have an estimated coefficient equal to zero. This is likely due to an issue with multicollinearity or overfitting, which can cause the model to fail to converge to a solution that is interpretable. The high standard errors and p-values close to 1 indicate that none of the coefficients are statistically significant. Additionally, the residual deviance and AIC suggest that the model is not fitting the data well.
+
+In summary, the logistic regression model is not useful for predicting the Recommended column based on the given independent variables in the dataframe. Further investigation is needed to determine the cause of the issue and to identify more appropriate modeling approaches.
